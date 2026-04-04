@@ -13,19 +13,25 @@ const Login = () => {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
+  const [error, setError] = useState("");
   const handleLogin = async () => {
-    const res = await axios.post(
-      BASE_URL + "/login",
-      {
-        email: email,
-        password: password,
-      },
-      { withCredentials: true },
-    );
-    console.log(res);
-    setSuccessMessage(res.data.message);
-    dispatch(addUser(res.data.data));
-    navigate("/");
+    try {
+      const res = await axios.post(
+        BASE_URL + "/login",
+        {
+          email: email,
+          password: password,
+        },
+        { withCredentials: true },
+      );
+      console.log(res);
+      setSuccessMessage(res.data.message);
+      dispatch(addUser(res.data.data));
+      navigate("/");
+    } catch (err) {
+      console.log(err.response.data);
+      setError(err?.response?.data);
+    }
   };
   return user ? (
     "You are already Signed in"
@@ -36,8 +42,12 @@ const Login = () => {
           <div className="alert alert-success">
             <span>{successMessage}</span>
           </div>
-          <div className="alert alert-info">
-            <span>{}</span>
+        </div>
+      )}
+      {error && (
+        <div className="toast toast-top top-12 toast-center z-10">
+          <div className="alert alert-error">
+            <span>{error}</span>
           </div>
         </div>
       )}
