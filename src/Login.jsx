@@ -1,18 +1,21 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "./features/user";
 import { useNavigate } from "react-router";
+import { BASE_URL } from "./utils/constants";
+import store from "./app/store";
 
 const Login = () => {
   const [email, setEmail] = useState("sagar@gmail.com");
   const [password, setPassword] = useState("Pass@123");
   const [successMessage, setSuccessMessage] = useState();
   const dispatch = useDispatch();
+  const user = useSelector((store) => store.user);
   const navigate = useNavigate();
   const handleLogin = async () => {
     const res = await axios.post(
-      "http://localhost:7744/login",
+      BASE_URL + "/login",
       {
         email: email,
         password: password,
@@ -24,7 +27,9 @@ const Login = () => {
     dispatch(addUser(res.data.data));
     navigate("/");
   };
-  return (
+  return user ? (
+    "You are already Signed in"
+  ) : (
     <div className="flex justify-center my-5">
       {successMessage && (
         <div className="toast toast-top top-12 toast-center z-10">
