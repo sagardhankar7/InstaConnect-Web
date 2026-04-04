@@ -2,12 +2,14 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "./features/user";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [email, setEmail] = useState("sagar@gmail.com");
   const [password, setPassword] = useState("Pass@123");
   const [successMessage, setSuccessMessage] = useState();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogin = async () => {
     const res = await axios.post(
       "http://localhost:7744/login",
@@ -20,6 +22,7 @@ const Login = () => {
     console.log(res);
     setSuccessMessage(res.data.message);
     dispatch(addUser(res.data.data));
+    navigate("/");
   };
   return (
     <div className="flex justify-center my-5">
