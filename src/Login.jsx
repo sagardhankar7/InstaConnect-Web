@@ -2,14 +2,34 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("sagar@gmail.com");
+  const [password, setPassword] = useState("Pass@123");
+  const [successMessage, setSuccessMessage] = useState();
 
   const handleLogin = async () => {
-    console.log("login button is pressed");
+    const res = await axios.post(
+      "http://localhost:7744/login",
+      {
+        email: email,
+        password: password,
+      },
+      { withCredentials: true },
+    );
+    console.log(res);
+    setSuccessMessage(res.data);
   };
   return (
     <div className="flex justify-center my-5">
+      {successMessage && (
+        <div className="toast toast-top top-12 toast-center z-10">
+          <div className="alert alert-success">
+            <span>{successMessage}</span>
+          </div>
+          <div className="alert alert-info">
+            <span>{}</span>
+          </div>
+        </div>
+      )}
       <div className="card card-border border-4 bg-base-100 w-96">
         <div className="card-body">
           <h2 className="card-title">Log In</h2>
