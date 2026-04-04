@@ -1,12 +1,17 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import store from "./app/store";
 
 const Navbar = () => {
+  const user = useSelector((store) => store.user);
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">InstaConnect</a>
       </div>
       <div className="flex gap-2">
+        <div>{user ? user.firstName : ""}</div>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -16,7 +21,11 @@ const Navbar = () => {
             <div className="w-10 rounded-full">
               <img
                 alt="Tailwind CSS Navbar component"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4KeDUyV1rxmFscg52uRZsEqG5KHfAYAq52ImBp-27NErWMeedHBKbFciA&s"
+                src={
+                  user
+                    ? user.photoUrl
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4KeDUyV1rxmFscg52uRZsEqG5KHfAYAq52ImBp-27NErWMeedHBKbFciA&s"
+                }
               />
             </div>
           </div>
