@@ -50,7 +50,7 @@ const ProfileEdit = () => {
   }, [user]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center my-3">
       {successMessage && (
         <div className="toast toast-top top-12 toast-center z-10">
           <div className="alert alert-success">
@@ -65,7 +65,7 @@ const ProfileEdit = () => {
           </div>
         </div>
       )}
-      <div className="card card-border border-4 bg-base-100 w-96">
+      <div className="mx-3 card card-border border-4 bg-base-100 w-96">
         <div className="card-body">
           <h2 className="card-title">Edit Profile</h2>
           <fieldset className="fieldset">
