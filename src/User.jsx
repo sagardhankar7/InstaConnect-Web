@@ -1,3 +1,4 @@
+// used in profileEdit,
 const User = ({ user }) => {
   return (
     <div className="card bg-base-100 w-96 shadow-sm">
