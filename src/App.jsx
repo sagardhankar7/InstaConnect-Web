@@ -7,6 +7,7 @@ import store from "./app/store";
 import Feed from "./Feed";
 import ProfileEdit from "./ProfileEdit";
 import Connections from "./Connections";
+import Requests from "./Requests";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/edit" element={<ProfileEdit />} />
               <Route path="/connections" element={<Connections />} />
+              <Route path="/requests" element={<Requests />} />
             </Route>
           </Routes>
         </BrowserRouter>

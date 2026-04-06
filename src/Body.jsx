@@ -16,7 +16,7 @@ const Body = () => {
       const res = await axios.get(BASE_URL + "/profile/view", {
         withCredentials: true,
       });
-      console.log(res);
+      //   console.log(res);
       dispatch(addUser(res.data));
     } catch (error) {
       navigate("/login");
@@ -24,6 +24,7 @@ const Body = () => {
     }
   };
 
+  //   It will be called on every page reload (becoz it is parent of all component)
   useEffect(() => {
     if (!user) handleReload();
   }, []);
