@@ -18,7 +18,7 @@ const Requests = () => {
       //   arr.forEach((req) => {
       //     console.log(req?.fromUserId);
       //   }
-      dispatch(addRequests(arr.map((req) => req?.fromUserId)));
+      dispatch(addRequests(arr));
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +32,7 @@ const Requests = () => {
       {requests.map((request) => (
         <>
           {/* <h1>{request.firstName}</h1> */}
-          <User user={request} />
+          <User user={request?.fromUserId} />
         </>
       ))}
     </>
