@@ -11,6 +11,7 @@ const ProfileEdit = () => {
   const [lastName, setLastName] = useState(user?.lastName);
   const [about, setAbout] = useState(user?.about);
   const [photoUrl, setPhotoUrl] = useState(user?.photoUrl);
+  const [skills, setSkills] = useState(user?.skills);
   const dispatch = useDispatch();
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
@@ -25,6 +26,7 @@ const ProfileEdit = () => {
           lastName,
           about,
           photoUrl,
+          skills,
         },
         { withCredentials: true },
       );
@@ -46,6 +48,7 @@ const ProfileEdit = () => {
       setLastName(user.lastName);
       setAbout(user.about);
       setPhotoUrl(user.photoUrl);
+      setSkills(user.skills);
     }
   }, [user]);
 
@@ -87,13 +90,22 @@ const ProfileEdit = () => {
             />
           </fieldset>
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">About</legend>
+            <legend className="fieldset-legend">Skills</legend>
             <input
-              value={about}
-              onChange={(e) => setAbout(e.target.value)}
+              value={skills}
+              onChange={(e) => setSkills(e.target.value)}
               type="text"
               className="input"
             />
+          </fieldset>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">About</legend>
+            <textarea
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+              className="textarea"
+              placeholder="Bio"
+            ></textarea>
           </fieldset>
 
           <fieldset className="fieldset">
@@ -119,7 +131,7 @@ const ProfileEdit = () => {
         </div>
       </div>
 
-      <User user={{ firstName, lastName, about, photoUrl }} />
+      <User user={{ firstName, lastName, about, photoUrl, skills }} />
     </div>
   );
 };

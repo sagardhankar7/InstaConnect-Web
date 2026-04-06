@@ -9,6 +9,12 @@ const User = ({ user }) => {
         <h2 className="card-title">
           {user.firstName} {user.lastName}
         </h2>
+
+        <div className=" uppercase font-semibold">
+          {user.skills?.map((element) => {
+            return <h3>{element}</h3>;
+          })}
+        </div>
         <p>{user.about}</p>
         <div className="card-actions">
           <button className="btn btn-primary">Like</button>
