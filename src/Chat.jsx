@@ -2,13 +2,18 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { BASE_URL } from "./utils/constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import store from "./app/store";
+import { addMessages } from "./features/messages";
 
 const Chat = () => {
-  const { toUserID } = useParams();
   const user = useSelector((store) => store.user);
+  const messages = useSelector((store) => store.messages);
+  const { toUserID } = useParams();
+  const dispatch = useDispatch();
   const [chatMsg, setChatMsg] = useState([]);
+  const [messageToSend, setMessageToSend] = useState("");
+
   const fetchMessages = async () => {
     try {
       const res = await axios.get(BASE_URL + "/msg/" + toUserID, {
@@ -20,13 +25,14 @@ const Chat = () => {
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       );
 
-      console.log(res?.data);
-      setChatMsg(sortedMessages);
+      dispatch(addMessages(sortedMessages));
+
+      //   console.log(res?.data);
+      //   setChatMsg(sortedMessages);
     } catch (err) {
       console.log("ERROR: ", err);
     }
   };
-  const [messageToSend, setMessageToSend] = useState("");
 
   const sendMessage = async () => {
     try {
@@ -35,9 +41,12 @@ const Chat = () => {
         { message: messageToSend },
         { withCredentials: true },
       );
+      console.log(res);
       if (!res) throw new Error("ERROR: from axios post");
       //   setChatMsg(...chatMsg, messageToSend);
-      setChatMsg((prev) => [...prev, messageToSend]);
+      //   setChatMsg((prev) => [...prev, messageToSend]);
+      dispatch(addMessages([...messages, res.data.data]));
+      console.log(messages);
 
       setMessageToSend("");
     } catch (error) {
@@ -50,11 +59,12 @@ const Chat = () => {
   }, []);
   return (
     <div>
-      {chatMsg.map((chat) => (
-        <>
+      {Array.isArray(messages) &&
+        messages.map((chat) => (
+          //   <>
           <div
             className={
-              chat?.toUserId?._id.toString() === user?._id.toString()
+              chat?.toUserId?._id?.toString() === user?._id?.toString()
                 ? "chat chat-start"
                 : "chat chat-end"
             }
@@ -69,8 +79,8 @@ const Chat = () => {
             </div>
             <div className="chat-bubble">{chat?.message}</div>
           </div>
-        </>
-      ))}
+          //   </>
+        ))}
 
       <div className="flex flex-row-reverse">
         <form
