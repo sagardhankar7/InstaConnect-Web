@@ -1,5 +1,28 @@
+import axios from "axios";
+import { BASE_URL } from "./utils/constants";
+import { useState } from "react";
+
 // used in profileEdit,
 const User = ({ user }) => {
+  const [acknoledgeInterested, setAcknoledgeInterested] = useState(false);
+  const [acknoledgeIgnored, setAcknoledgeIgnored] = useState(false);
+  const dataCall = async (status, toUserId) => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/request/send/" + status + "/" + toUserId,
+        {},
+        { withCredentials: true },
+      );
+      if (res?.data?.data?.status == "interested")
+        setAcknoledgeInterested(true);
+      if (res?.data?.data?.status == "ignored") setAcknoledgeIgnored(true);
+
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="card bg-base-100 w-96 shadow-sm">
       <figure className="px-10 pt-10">
@@ -17,7 +40,30 @@ const User = ({ user }) => {
         </div>
         <p>{user.about}</p>
         <div className="card-actions">
-          <button className="btn btn-primary">Like</button>
+          {acknoledgeIgnored ? (
+            <button className="btn btn-disabled">
+              <span className="group-hover:hidden">Ignored</span>
+              <span className="hidden group-hover:inline">Undo</span>
+            </button>
+          ) : (
+            <button
+              className="btn btn-secondary"
+              onClick={() => dataCall("ignored", user._id)}
+            >
+              Ignore
+            </button>
+          )}
+
+          {acknoledgeInterested ? (
+            <button className="btn btn-success">Sent Successfully</button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={() => dataCall("interested", user._id)}
+            >
+              Interested
+            </button>
+          )}
         </div>
       </div>
     </div>

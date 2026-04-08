@@ -59,7 +59,7 @@ const Login = () => {
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              type="text"
+              type="email"
               className="input"
             />
           </fieldset>
@@ -68,7 +68,7 @@ const Login = () => {
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              type="text"
+              type="password"
               className="input"
             />
           </fieldset>
