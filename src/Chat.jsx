@@ -16,8 +16,12 @@ const Chat = () => {
       });
       //   console.log(user);
 
+      const sortedMessages = res?.data.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+      );
+
       console.log(res?.data);
-      setChatMsg(res?.data);
+      setChatMsg(sortedMessages);
     } catch (err) {
       console.log("ERROR: ", err);
     }
