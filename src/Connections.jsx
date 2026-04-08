@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { BASE_URL } from "./utils/constants";
 import { useSelector } from "react-redux";
 import Friend from "./Friend";
+import { Link } from "react-router";
 
 const Connections = () => {
   const user = useSelector((store) => store.user);
   const [friend, setFriend] = useState([]);
-  const [connectionSelected, setConnectionSelected] = useState(null);
   const handleConnections = async () => {
     const res = await axios.get(BASE_URL + "/user/connections", {
       withCredentials: true,
@@ -32,7 +32,9 @@ const Connections = () => {
       <h1 className="font-bold text-2xl text-center">Connections</h1>
       <div className="flex flex-wrap">
         {friend.map((fin) => (
-          <Friend user={fin} key={fin._id} />
+          <Link to={"/connection/" + fin._id}>
+            <Friend user={fin} key={fin._id} />
+          </Link>
         ))}
       </div>
     </>
