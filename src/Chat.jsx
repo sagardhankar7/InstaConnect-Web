@@ -11,7 +11,6 @@ const Chat = () => {
   const messages = useSelector((store) => store.messages);
   const { toUserID } = useParams();
   const dispatch = useDispatch();
-  const [chatMsg, setChatMsg] = useState([]);
   const [messageToSend, setMessageToSend] = useState("");
 
   const fetchMessages = async () => {
@@ -19,16 +18,11 @@ const Chat = () => {
       const res = await axios.get(BASE_URL + "/msg/" + toUserID, {
         withCredentials: true,
       });
-      //   console.log(user);
-
-      const sortedMessages = res?.data.sort(
+      const sortedMessages = res?.data?.messages.sort(
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
       );
 
       dispatch(addMessages(sortedMessages));
-
-      //   console.log(res?.data);
-      //   setChatMsg(sortedMessages);
     } catch (err) {
       console.log("ERROR: ", err);
     }
@@ -41,46 +35,57 @@ const Chat = () => {
         { message: messageToSend },
         { withCredentials: true },
       );
-      console.log(res);
       if (!res) throw new Error("ERROR: from axios post");
-      //   setChatMsg(...chatMsg, messageToSend);
-      //   setChatMsg((prev) => [...prev, messageToSend]);
+
       dispatch(addMessages([...messages, res.data.data]));
-      console.log(messages);
 
       setMessageToSend("");
     } catch (error) {
       console.log(error);
     }
   };
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
+  const reversedMessages = [...messages].reverse();
+  const paginatedMessages = reversedMessages.slice(startIndex, endIndex);
+
+  const handleLeftClick = () => {
+    if (paginatedMessages.length < 10) return;
+    setCurrentPage(currentPage + 1);
+    // console.log("Start Index: ", startIndex, "End Index: ", endIndex);
+    // console.log("Paginated Messages: ", paginatedMessages);
+  };
+  const handleRightClick = () => {
+    setCurrentPage(Math.max(currentPage - 1, 1));
+  };
 
   useEffect(() => {
     fetchMessages();
   }, []);
   return (
-    <div>
-      {Array.isArray(messages) &&
-        messages.map((chat) => (
-          //   <>
-          <div
-            className={
-              chat?.toUserId?._id?.toString() === user?._id?.toString()
-                ? "chat chat-start"
-                : "chat chat-end"
-            }
-          >
-            <div className="chat-image avatar">
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS chat bubble component"
-                  src={chat?.fromUserId?.photoUrl}
-                />
-              </div>
+    <div className="mb-25">
+      {paginatedMessages.reverse().map((chat) => (
+        <div
+          key={chat._id}
+          className={
+            chat?.toUserId?._id?.toString() === user?._id?.toString()
+              ? "chat chat-start"
+              : "chat chat-end"
+          }
+        >
+          <div className="chat-image avatar">
+            <div className="w-10 rounded-full">
+              <img
+                alt="Tailwind CSS chat bubble component"
+                src={chat?.fromUserId?.photoUrl}
+              />
             </div>
-            <div className="chat-bubble">{chat?.message}</div>
           </div>
-          //   </>
-        ))}
+          <div className="chat-bubble">{chat?.message}</div>
+        </div>
+      ))}
 
       <div className="flex flex-row-reverse">
         <form
@@ -97,6 +102,15 @@ const Chat = () => {
             onChange={(e) => setMessageToSend(e.target.value)}
           />
         </form>
+      </div>
+      <div className="join fixed bottom-20 left-1/2 transform -translate-1/2">
+        <button onClick={() => handleLeftClick()} className="join-item btn">
+          «
+        </button>
+        <button className="join-item btn">Page {currentPage}</button>
+        <button onClick={() => handleRightClick()} className="join-item btn">
+          »
+        </button>
       </div>
     </div>
   );
