@@ -6,6 +6,7 @@ import axios from "axios";
 import { BASE_URL } from "./utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "./features/user";
+import { addRole } from "./features/role";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,8 @@ const Body = () => {
         withCredentials: true,
       });
       console.log("Reload", res);
-      dispatch(addUser(res.data));
+      dispatch(addUser(res.data.data));
+      dispatch(addRole(res.data.role));
     } catch (error) {
       navigate("/login");
       console.log(error);

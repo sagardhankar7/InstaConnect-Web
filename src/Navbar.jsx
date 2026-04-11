@@ -8,6 +8,8 @@ import { removeUser } from "./features/user";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
+  const role = useSelector((store) => store.role);
+  console.log(role);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,6 +25,7 @@ const Navbar = () => {
         <Link to="/" className="btn btn-ghost text-xl">
           InstaConnect
         </Link>
+        {role === "admin" && <b>Admin</b>}
       </div>
       <div className="flex gap-2">
         <div>{user ? user.firstName : ""}</div>

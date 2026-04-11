@@ -11,7 +11,7 @@ const ProfileEdit = () => {
   const [lastName, setLastName] = useState(user?.lastName);
   const [about, setAbout] = useState(user?.about);
   const [photoUrl, setPhotoUrl] = useState(user?.photoUrl);
-  const [skills, setSkills] = useState(user?.skills);
+  const [skills, setSkills] = useState(user?.skills?.join(", "));
   const dispatch = useDispatch();
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
@@ -19,6 +19,7 @@ const ProfileEdit = () => {
   const handleSave = async () => {
     try {
       setError("");
+      const skillsArray = skills?.split(",").map((s) => s.trim()) || [];
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
         {
@@ -26,7 +27,7 @@ const ProfileEdit = () => {
           lastName,
           about,
           photoUrl,
-          skills,
+          skills: skillsArray,
         },
         { withCredentials: true },
       );
@@ -37,7 +38,9 @@ const ProfileEdit = () => {
         setSuccessMessage("");
       }, 3000);
     } catch (error) {
-      setError(error?.response?.data);
+      setError(
+        error?.response?.data || "An error occurred while saving the profile.",
+      );
       console.log(error?.response?.data);
     }
   };
@@ -48,7 +51,7 @@ const ProfileEdit = () => {
       setLastName(user.lastName);
       setAbout(user.about);
       setPhotoUrl(user.photoUrl);
-      setSkills(user.skills);
+      setSkills(user.skills?.join(", "));
     }
   }, [user]);
 
@@ -74,7 +77,7 @@ const ProfileEdit = () => {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">First Name</legend>
             <input
-              value={firstName}
+              value={firstName || ""}
               onChange={(e) => setFirstName(e.target.value)}
               type="text"
               className="input"
@@ -83,7 +86,7 @@ const ProfileEdit = () => {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Last Name</legend>
             <input
-              value={lastName}
+              value={lastName || ""}
               onChange={(e) => setLastName(e.target.value)}
               type="text"
               className="input"
@@ -92,7 +95,7 @@ const ProfileEdit = () => {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Skills</legend>
             <input
-              value={skills}
+              value={skills || ""}
               onChange={(e) => setSkills(e.target.value)}
               type="text"
               className="input"
@@ -101,7 +104,7 @@ const ProfileEdit = () => {
           <fieldset className="fieldset">
             <legend className="fieldset-legend">About</legend>
             <textarea
-              value={about}
+              value={about || ""}
               onChange={(e) => setAbout(e.target.value)}
               className="textarea"
               placeholder="Bio"

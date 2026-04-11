@@ -4,6 +4,11 @@ import { useState } from "react";
 
 // used in profileEdit,
 const User = ({ user }) => {
+  const s = user.skills;
+  const skillsArray = Array.isArray(s)
+    ? s
+    : s?.split(",").map((skill) => skill.trim());
+
   const [acknoledgeInterested, setAcknoledgeInterested] = useState(false);
   const [acknoledgeIgnored, setAcknoledgeIgnored] = useState(false);
   const dataCall = async (status, toUserId) => {
@@ -24,20 +29,21 @@ const User = ({ user }) => {
   };
 
   return (
-    <div className="card bg-base-100 w-96 shadow-sm">
+    <div className="card bg-base-200 w-full max-w-120 shadow-sm mx-1">
       <figure className="px-10 pt-10">
-        <img src={user.photoUrl} alt="user" className="rounded-xl" />
+        <img src={user.photoUrl || null} alt="user" className="rounded-xl" />
       </figure>
+
       <div className="card-body items-center text-center">
         <h2 className="card-title">
           {user.firstName} {user.lastName}
         </h2>
 
-        <div className=" uppercase font-semibold">
-          {user.skills?.map((element) => {
-            return <h3>{element}</h3>;
-          })}
-        </div>
+        {skillsArray?.length > 0 && (
+          <div className="uppercase font-semibold shadow-lg rounded p-5">
+            {skillsArray?.join(", ")}
+          </div>
+        )}
         <p>{user.about}</p>
         <div className="card-actions">
           {acknoledgeIgnored ? (
