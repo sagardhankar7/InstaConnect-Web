@@ -2,13 +2,15 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "./features/user";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { BASE_URL } from "./utils/constants";
 import store from "./app/store";
 
-const Login = () => {
-  const [email, setEmail] = useState("sagar@gmail.com");
-  const [password, setPassword] = useState("Pass@123");
+const Signup = () => {
+  const [email, setEmail] = useState("johncena@gmail.com");
+  const [password, setPassword] = useState("Pass@123"); //Pass@123
+  const [firstName, setFirstName] = useState("John");
+  const [lastName, setLastName] = useState("Cena");
   const [successMessage, setSuccessMessage] = useState();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
@@ -17,20 +19,22 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        BASE_URL + "/login",
+        BASE_URL + "/signup",
         {
+          firstName: firstName,
+          lastName: lastName,
           email: email,
           password: password,
         },
         { withCredentials: true },
       );
       console.log(res);
-      setSuccessMessage(res.data.message);
-      dispatch(addUser(res.data.data));
+      setSuccessMessage(res?.data?.message);
+      dispatch(addUser(res?.data?.data));
       navigate("/");
     } catch (err) {
-      console.log(err.response.data);
-      setError(err?.response?.data);
+      console.log(err);
+      setError(err?.data);
     }
   };
   return user ? (
@@ -53,7 +57,26 @@ const Login = () => {
       )}
       <div className="card card-border border-4 bg-base-100 w-96">
         <div className="card-body">
-          <h2 className="card-title">Log In</h2>
+          <h2 className="card-title">Sign up</h2>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">First Name</legend>
+            <input
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              type="text"
+              className="input"
+            />
+          </fieldset>
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Last Name</legend>
+            <input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              type="text"
+              className="input"
+            />
+          </fieldset>
+
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Email Id</legend>
             <input
@@ -75,11 +98,8 @@ const Login = () => {
 
           <div className="card-actions justify-center">
             <button onClick={handleLogin} className="btn btn-primary">
-              Login
+              Signup
             </button>
-            <Link to="/signup">
-              <button className="btn btn-secondary">New User?</button>
-            </Link>
           </div>
         </div>
       </div>
@@ -87,4 +107,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
