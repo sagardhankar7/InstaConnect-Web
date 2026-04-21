@@ -1,1 +1,3 @@
-export const BASE_URL = "http://localhost:7744";
+export const BASE_URL = "https://insta-connect-web.vercel.app";
+
+// "http://localhost:7744"
