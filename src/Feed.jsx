@@ -75,7 +75,8 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    if (role == "default") handleFeed();
+    console.log("Role is --------------------------------------", role);
+    if (role == "default" || role == "user") handleFeed();
     if (role == "admin") handleAdminConnections();
     if (role == "admin") handleAdminUsers();
   }, [role]);
@@ -212,20 +213,21 @@ const Feed = () => {
         </div>
       )}
 
-      <div className="flex justify-center mt-10">
-        {role === "default" && (
-          <div className="carousel rounded-box w-120">
-            {data.map((user) => (
-              <div
-                className="carousel-item w-full flex justify-center"
-                key={user._id}
-              >
-                <User user={user} />
-              </div>
-            ))}
+      {role === "default" ||
+        (role === "user" && (
+          <div className="flex justify-center mt-10">
+            <div className="carousel rounded-box w-120">
+              {data.map((user) => (
+                <div
+                  className="carousel-item w-full flex justify-center"
+                  key={user._id}
+                >
+                  <User user={user} />
+                </div>
+              ))}
+            </div>
           </div>
-        )}
-      </div>
+        ))}
     </div>
   );
 };

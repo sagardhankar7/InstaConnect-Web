@@ -5,7 +5,7 @@ import { addUser } from "./features/user";
 import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "./utils/constants";
 import store from "./app/store";
-
+import Back2Home from "./utils/Back2Home";
 const Login = () => {
   const [email, setEmail] = useState("sagar@gmail.com");
   const [password, setPassword] = useState("Pass@123");
@@ -34,7 +34,7 @@ const Login = () => {
     }
   };
   return user ? (
-    "You are already Signed in"
+    <Back2Home />
   ) : (
     <div className="flex justify-center my-5">
       {successMessage && (

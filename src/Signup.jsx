@@ -2,9 +2,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "./features/user";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { BASE_URL } from "./utils/constants";
 import store from "./app/store";
+import Back2Home from "./utils/Back2Home"
 
 const Signup = () => {
   const [email, setEmail] = useState("johncena@gmail.com");
@@ -38,7 +39,7 @@ const Signup = () => {
     }
   };
   return user ? (
-    "You are already Signed in"
+    <Back2Home />
   ) : (
     <div className="flex justify-center my-5">
       {successMessage && (
@@ -97,7 +98,12 @@ const Signup = () => {
           </fieldset>
 
           <div className="card-actions justify-center">
-            <button onClick={handleLogin} className="btn btn-primary">
+            <Link to="/login">
+              <button className="btn btn-primary">
+                Already have account ?{" "}
+              </button>
+            </Link>
+            <button onClick={handleLogin} className="btn btn-secondary">
               Signup
             </button>
           </div>

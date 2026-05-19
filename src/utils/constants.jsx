@@ -1,3 +1,4 @@
-export const BASE_URL = "https://instaconnect-backend-n6ox.onrender.com";
+export const BASE_URL = "https://insta-connect-backend.vercel.app"
+  //  "https://instaconnect-backend-n6ox.onrender.com";
 
-// "http://localhost:7744"
+//   "http://localhost:7744";
